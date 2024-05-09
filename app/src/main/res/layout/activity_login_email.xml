@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginEmailActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <ImageButton
+            android:id="@+id/toolbarBackBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/toolbarTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Login"
+            style="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray2" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/toolbarRl"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/gray1"
+            android:src="@drawable/ic_person_white"
+            app:shapeAppearanceOverlay="@style/ImageStyle_Circle"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+        <TextView
+            android:id="@+id/loginLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/profileIv"
+            android:layout_marginTop="10dp"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:text="Login to Your Account" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTil"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_below="@id/loginLabelTv"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:startIconDrawable="@drawable/ic_letter_white"
+            android:hint="Email">
+
+            <EditText
+                android:id="@+id/emailEt"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            android:hint="Password"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock_while"
+            android:layout_below="@id/emailTil">
+
+            <EditText
+                android:id="@+id/passwordEt"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/boAccountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:text="@string/not_have_account_register"
+            android:layout_below="@id/passwordTil"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginBtn"
+            android:text="Login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_500"
+            android:layout_alignParentBottom="true"
+            android:minHeight="60dp"
+            app:cornerRadius="8dp"/>
+    </RelativeLayout>
+</RelativeLayout>

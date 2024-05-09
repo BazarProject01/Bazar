@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+   <RelativeLayout
+      android:id="@+id/toolbarRl"
+       android:layout_width="match_parent"
+       android:layout_height="55dp">
+      <TextView
+          android:id="@+id/toolbarTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          style="@style/TextAppearance.MaterialComponents.Body1"
+         android:text="Home"/>
+      <View
+         android:layout_alignParentBottom="true"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/gray2"/>
+
+ </RelativeLayout>
+
+   <FrameLayout
+      android:layout_below="@id/toolbarRl"
+      android:layout_above="@id/viev1"
+      android:id="@+id/fragmentsFL"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
+
+   <View
+       android:id="@+id/viev1"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/gray2"
+      android:layout_above="@id/bottomNw"/>
+
+   <com.google.android.material.bottomnavigation.BottomNavigationView
+       android:id="@+id/bottomNw"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       app:menu="@menu/menu_bottom"
+       app:labelVisibilityMode="labeled"/>
+
+
+</RelativeLayout>
