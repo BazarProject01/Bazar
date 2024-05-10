@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation("com.hbb20:ccp:2.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
     implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

@@ -116,6 +116,7 @@ public class RegisterEmailActivity extends AppCompatActivity {
     }
     private void updateUserInfo(){
         progressDialog.setMessage("Saving User info");
+
         long timestamp = Utils.getTimestamp();
         String registerUserEmail = firebaseAuth.getCurrentUser().getEmail();
         String registerUserUid = firebaseAuth.getUid();

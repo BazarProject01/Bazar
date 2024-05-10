@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         startLoginOptions();
                         return false;
                     } else {
-                        showMyAdsFragment();
+                        showAccountFragment();
                         return true;
                     }
 

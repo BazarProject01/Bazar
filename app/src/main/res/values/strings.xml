@@ -13,4 +13,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="not_have_account_register">Not Have Account? <b>Register</b> </string>
     <string name="already_have_account_login">Already Have Account? <b> Login</b> </string>
+    <string name="default_web_client_id">948137080961-6efuphv4vlhl2aopi7iequao7i261jlq.apps.googleusercontent.com</string>
+    <string name="did_nt_recieve_otp_resend">Did\`nt sent OTP? <b> Resend </b></string>
 </resources>
