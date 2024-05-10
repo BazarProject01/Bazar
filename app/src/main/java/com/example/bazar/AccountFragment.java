@@ -63,13 +63,21 @@ public class AccountFragment extends Fragment {
             }
         });
 
+
         binding.editProfileCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, ProfileEditAcrivity.class));
             }
         });
+        binding.changePasswordCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, ChangePasswordActivity.class));
+            }
+        });
     }
+
 
     private void loadMyInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");

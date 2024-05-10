@@ -53,6 +53,14 @@ public class LoginEmailActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginEmailActivity.this, RegisterEmailActivity.class));
             }
         });
+
+        binding.forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginEmailActivity.this, ForgotPasswordActivity.class));
+
+            }
+        });
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
