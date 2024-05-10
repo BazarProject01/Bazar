@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DeleteAccountActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/toolbarBackBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Account"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_centerInParent="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_below="@id/toolbarRl">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_person_white"
+            android:layout_centerHorizontal="true"
+            android:background="@color/gray1"
+            app:shapeAppearanceOverlay="@style/ImageStyle_Circle" />
+
+        <TextView
+            android:id="@+id/labelTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/profileIv"
+            android:text="Are you sure you want to delete your account including data? \n Yuu will not be able to access your account again! \n The action can`t be undone"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_alignParentBottom="true"
+            android:id="@+id/submitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confrim Delete"
+            app:icon="@drawable/ic_delete_gray"
+            app:cornerRadius="8dp"
+            android:minHeight="55dp"
+            android:backgroundTint="@color/purple_500"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.bazar;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.bazar.databinding.FragmentAccountBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +35,7 @@ public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
     private static final String TAG = "ACCOUNT_FRAGMENT_TAG";
     private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
     private Context mContext;
     public void onAttach(@NonNull Context context)
     {
@@ -51,6 +55,11 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setTitle("Please wait...");
+        progressDialog.setCanceledOnTouchOutside(false);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         loadMyInfo();
@@ -74,6 +83,20 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, ChangePasswordActivity.class));
+            }
+        });
+        binding.verifyAccountCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyAccount();
+            }
+        });
+
+        binding.deleteAccountCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, DeleteAccountActivity.class));
+                getActivity().finishAffinity();
             }
         });
     }
@@ -114,14 +137,15 @@ public class AccountFragment extends Fragment {
                             boolean isverified = firebaseAuth.getCurrentUser().isEmailVerified();
 
                             if(isverified) {
-
+                                binding.verifyAccountCv.setVisibility(View.GONE);
                                 binding.verificationTv.setText("Verified");
                             } else {
-
+                                binding.verifyAccountCv.setVisibility(View.VISIBLE);
                                 binding.verificationTv.setText("Not Verified");
                             }
 
                         } else {
+                            binding.verifyAccountCv.setVisibility(View.GONE);
                             binding.verificationTv.setText("Verified");
                         }
 
@@ -143,6 +167,30 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
+    }
+    private void verifyAccount()
+    {
+        Log.d(TAG, "verifyAccount: ");
+        progressDialog.setMessage("Sending Account verification instructions to your email");
+        progressDialog.show();
+
+        firebaseAuth.getCurrentUser().sendEmailVerification()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        Log.d(TAG, "onSuccess: Sent");
+                        progressDialog.dismiss();
+                        Utils.toast(mContext, "Account verification instructions sent to your email" );
+                    }
+                }). addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: ",e );
+                        progressDialog.dismiss();
+                        Utils.toast(mContext, "Failed due to" + e.getMessage());
                     }
                 });
     }

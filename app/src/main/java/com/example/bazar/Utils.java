@@ -1,5 +1,6 @@
 package com.example.bazar;
 
+import static androidx.core.app.ActivityCompat.finishAffinity;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
@@ -23,12 +24,4 @@ public class Utils {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-    public static String formatTimestampDate(Long timestamp){
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(timestamp);
-
-        String date = DateFormat.format("dd//MM//yyyy", calendar).toString();
-
-        return date;
-    }
 }
