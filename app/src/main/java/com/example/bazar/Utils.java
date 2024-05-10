@@ -4,7 +4,12 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.CalendarView;
 import android.widget.Toast;
+
+import android.text.format.DateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Utils {
     public static void toast(Context context, String message) {
@@ -16,5 +21,14 @@ public class Utils {
     }
     public static void goToMenu(Context context ) {
         context.startActivity(new Intent(context, MainActivity.class));
+    }
+
+    public static String formatTimestampDate(Long timestamp){
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(timestamp);
+
+        String date = DateFormat.format("dd//MM//yyyy", calendar).toString();
+
+        return date;
     }
 }

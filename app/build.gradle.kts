@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation("com.hbb20:ccp:2.7.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-auth:21.1.1")
     implementation(libs.firebase.storage)
     testImplementation(libs.junit)
