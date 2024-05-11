@@ -11,8 +11,13 @@ import android.view.View;
 
 import com.example.bazar.databinding.ActivityDeleteAccountBinding;
 import com.example.bazar.databinding.FragmentAccountBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,8 +65,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
             }
         });
     }
-    private void deleteAccount(){
-
+    private void deleteAccount() {
         String myUid = firebaseAuth.getUid();
 
         progressDialog.setMessage("Deleting User Account");
@@ -69,56 +73,80 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
         firebaseUser.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        FirebaseAuth.getInstance().signOut();
 
-                progressDialog.setMessage("Deleting User Ads");
-
-                DatabaseReference refUserAds = FirebaseDatabase.getInstance().getReference("Ads");
-                refUserAds.orderByChild("uid").equalTo(myUid)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                        // Очистка кэша аутентификации Firebase для Google Sign-In
+                        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken(getString(R.string.default_web_client_id))
+                                .requestEmail()
+                                .build();
+                        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(DeleteAccountActivity.this, gso);
+                        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot ds : snapshot.getChildren()) {
-                                    ds.getRef().removeValue();
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // Успешно вышли из аккаунта Google
+                                    Log.d(TAG, "Successfully signed out from Google.");
+
+                                    // После очистки кэша аутентификации Firebase, перенаправляем пользователя на экран выбора аккаунта или экран входа
+                                    Utils.goToMenu(DeleteAccountActivity.this);
+                                } else {
+                                    // Возникла ошибка при выходе из аккаунта Google
+                                    Log.e(TAG, "Failed to sign out from Google: " + task.getException().getMessage());
+
+                                    // Продолжаем с другими операциями после выхода из аккаунта Google
+                                    // Например, перенаправляем пользователя на экран выбора аккаунта или экран входа
+                                    Utils.goToMenu(DeleteAccountActivity.this);
                                 }
-
-
-                                progressDialog.setMessage("Deleting User Data...");
-                                DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("Users");
-                                refUsers.child(myUid)
-                                        .removeValue()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Utils.goToMenu(DeleteAccountActivity.this);
-                                                finishAffinity();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                progressDialog.dismiss();
-                                                Utils.toast(DeleteAccountActivity.this, "Failed to delete user data due to "+e.getMessage());
-                                                Utils.goToMenu(DeleteAccountActivity.this);
-                                                Log.e(TAG, "onFailure: ",e );
-
-                                            }
-                                        });
-
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
                             }
                         });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Utils.toast(DeleteAccountActivity.this, "Failed to delete account due to "+e.getMessage());
-            }
-        });
+
+                        progressDialog.setMessage("Deleting User Ads");
+                        DatabaseReference refUserAds = FirebaseDatabase.getInstance().getReference("Ads");
+                        refUserAds.orderByChild("uid").equalTo(myUid)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            ds.getRef().removeValue();
+                                        }
+
+                                        progressDialog.setMessage("Deleting User Data...");
+                                        DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("Users");
+                                        refUsers.child(myUid)
+                                                .removeValue()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        progressDialog.dismiss();
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        progressDialog.dismiss();
+                                                        Utils.toast(DeleteAccountActivity.this, "Failed to delete user data due to "+e.getMessage());
+                                                        Log.e(TAG, "onFailure: ",e );
+                                                    }
+                                                });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        progressDialog.dismiss();
+                                        Utils.toast(DeleteAccountActivity.this, "Failed to delete user data due to database error");
+                                    }
+                                });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Utils.toast(DeleteAccountActivity.this, "Failed to delete account due to "+e.getMessage());
+                    }
+                });
     }
+
 
 }

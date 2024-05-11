@@ -59,8 +59,16 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
 
-                } else {
-
+                } else if (itemId == R.id.menu_sell) {
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        Utils.toast(MainActivity.this, "Login Required...");
+                        startLoginOptions();
+                        return false;
+                    } else {
+                        showAdCreateFragment();
+                        return true;
+                    }
+                }else {
                     return false;
                 }
 
@@ -89,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(binding.fragmentsFL.getId(), fragment, "AccountFragment");
         fragmentTransaction.commit();
+    }
+    private void showAdCreateFragment() {
+        startActivity(new Intent(MainActivity.this, AdCreateActivity.class));
     }
 
     private void startLoginOptions()
