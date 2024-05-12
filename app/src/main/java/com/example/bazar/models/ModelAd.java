@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.models;
 
 public class ModelAd {
 

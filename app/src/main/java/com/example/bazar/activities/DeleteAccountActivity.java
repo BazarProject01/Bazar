@@ -1,16 +1,16 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.bazar.R;
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityDeleteAccountBinding;
-import com.example.bazar.databinding.FragmentAccountBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

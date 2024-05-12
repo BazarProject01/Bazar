@@ -2,6 +2,9 @@ package com.example.bazar;
 
 import android.widget.Filter;
 
+import com.example.bazar.adapters.AdapterAd;
+import com.example.bazar.models.ModelAd;
+
 import java.util.ArrayList;
 
 public class FilterAd extends Filter {

@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bazar.adapters.AdapterAd;
 import com.example.bazar.databinding.FragmentMyAdsFavBinding;
+import com.example.bazar.models.ModelAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

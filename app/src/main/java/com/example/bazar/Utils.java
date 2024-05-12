@@ -1,27 +1,20 @@
 package com.example.bazar;
 
-import static androidx.core.app.ActivityCompat.finishAffinity;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.widget.CalendarView;
+import android.net.Uri;
 import android.widget.Toast;
-
-import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
 
+import com.example.bazar.activities.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.internal.Util;
 
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class Utils {
 
@@ -130,6 +123,10 @@ public class Utils {
 
 
         }
+    }
+    public static void callIntent(Context context, String phone){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + Uri.encode(phone)));
+        context.startActivity(intent);
     }
 
 

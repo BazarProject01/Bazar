@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -19,39 +19,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bazar"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
-            android:name=".AdCreateActivity"
+            android:name=".activities.AdDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".DeleteAccountActivity"
+            android:name=".activities.AdCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".activities.DeleteAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChangePasswordActivity"
             android:exported="false"
             android:label="@string/title_activity_change_password"
             android:theme="@style/Theme.Bazar" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileEditAcrivity"
+            android:name=".activities.ProfileEditAcrivity"
             android:exported="false" />
         <activity
-            android:name=".LoginPhoneActivity"
+            android:name=".activities.LoginPhoneActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginEmailActivity"
+            android:name=".activities.LoginEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterEmailActivity"
+            android:name=".activities.RegisterEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginOptionsActivity"
+            android:name=".activities.LoginOptionsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".activities.MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

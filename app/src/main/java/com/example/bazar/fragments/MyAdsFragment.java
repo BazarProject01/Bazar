@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.bazar.databinding.FragmentMyAdsAdsBinding;
 import com.example.bazar.databinding.FragmentMyAdsBinding;
 import com.google.android.material.tabs.TabLayout;
 

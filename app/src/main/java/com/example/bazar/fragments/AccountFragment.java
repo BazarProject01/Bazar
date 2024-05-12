@@ -1,9 +1,8 @@
-package com.example.bazar;
+package com.example.bazar.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.example.bazar.R;
+import com.example.bazar.Utils;
+import com.example.bazar.activities.ChangePasswordActivity;
+import com.example.bazar.activities.DeleteAccountActivity;
+import com.example.bazar.activities.MainActivity;
+import com.example.bazar.activities.ProfileEditAcrivity;
 import com.example.bazar.databinding.FragmentAccountBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

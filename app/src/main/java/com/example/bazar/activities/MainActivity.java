@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.bazar.fragments.AccountFragment;
+import com.example.bazar.fragments.HomeFragment;
+import com.example.bazar.fragments.MyAdsFragment;
+import com.example.bazar.R;
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;

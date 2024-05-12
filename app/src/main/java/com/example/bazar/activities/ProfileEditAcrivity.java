@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,8 +24,9 @@ import android.Manifest;
 
 
 import com.bumptech.glide.Glide;
+import com.example.bazar.R;
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityProfileEditAcrivityBinding;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +43,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ProfileEditAcrivity extends AppCompatActivity {
 

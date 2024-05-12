@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.models;
 
 import android.net.Uri;
 

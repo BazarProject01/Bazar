@@ -1,12 +1,11 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
-import com.example.bazar.databinding.ActivityForgotPasswordBinding;
+import com.example.bazar.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,20 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import com.example.bazar.databinding.ActivityChangePasswordBinding;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.BlockingDeque;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 

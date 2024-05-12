@@ -1,7 +1,7 @@
-package com.example.bazar;
+package com.example.bazar.adapters;
 
 import android.content.Context;
-import android.graphics.ColorSpace;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bazar.FilterAd;
+import com.example.bazar.R;
+import com.example.bazar.Utils;
+import com.example.bazar.activities.AdDetailsActivity;
 import com.example.bazar.databinding.RowAdBinding;
+import com.example.bazar.models.ModelAd;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -81,6 +86,16 @@ public class AdapterAd extends RecyclerView.Adapter<AdapterAd.Holder> implements
         holder.conditionTv.setText(condition);
         holder.priceTv.setText(price);
         holder.dateTv.setText(formattedDate);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AdDetailsActivity.class);
+                intent.putExtra("adId", modelAd.getId());
+                context.startActivity(intent);
+            }
+        });
 
         holder.favBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

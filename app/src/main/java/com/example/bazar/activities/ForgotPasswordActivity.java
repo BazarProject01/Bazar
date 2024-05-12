@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +9,8 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityForgotPasswordBinding;
-import com.example.bazar.databinding.ActivityLoginEmailBinding;
-import com.example.bazar.databinding.ActivityRegisterEmailBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

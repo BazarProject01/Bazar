@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityLoginPhoneBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

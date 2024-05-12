@@ -1,18 +1,16 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.tv.TvContract;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
-import com.example.bazar.databinding.ActivityLoginEmailBinding;
+import com.example.bazar.Utils;
 import com.example.bazar.databinding.ActivityRegisterEmailBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class RegisterEmailActivity extends AppCompatActivity {
 

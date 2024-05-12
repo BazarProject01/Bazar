@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bazar.RvListenerCategory;
+import com.example.bazar.models.ModelCategory;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.example.bazar.databinding.RowCategoryBinding;
 

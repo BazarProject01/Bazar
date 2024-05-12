@@ -1,7 +1,6 @@
-package com.example.bazar;
+package com.example.bazar.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bazar.R;
+import com.example.bazar.RvListenerCategory;
+import com.example.bazar.Utils;
+import com.example.bazar.adapters.AdapterAd;
+import com.example.bazar.adapters.AdapterCategory;
 import com.example.bazar.databinding.FragmentHomeBinding;
+import com.example.bazar.models.ModelAd;
+import com.example.bazar.models.ModelCategory;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -1,4 +1,4 @@
-package com.example.bazar;
+package com.example.bazar.activities;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,7 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.bazar.R;
+import com.example.bazar.Utils;
+import com.example.bazar.adapters.AdapterImagePicked;
 import com.example.bazar.databinding.ActivityAdCreateBinding;
+import com.example.bazar.models.ModelImagePicked;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +44,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AdCreateActivity extends AppCompatActivity {
 
@@ -369,77 +374,59 @@ public class AdCreateActivity extends AppCompatActivity {
 
     }
 
-    private  void uploadImageStorage(String keyId){
+    private void uploadImageStorage(String keyId) {
         Log.d(TAG, "uploadImageStorage: ");
 
-        for (int i= 0; i < imagePickedArrayList.size(); i++)
-        {
+        AtomicInteger uploadedImages = new AtomicInteger(0);
+        int totalImages = imagePickedArrayList.size();
+
+        for (int i = 0; i < totalImages; i++) {
             ModelImagePicked modelImagePicked = imagePickedArrayList.get(i);
-
             String imageName = modelImagePicked.getId();
-
-
-            String filePathandName = "Ads/"+imageName;
-
-            int imageIndexForProgress = i+1;
-
+            String filePathandName = "Ads/" + imageName;
+            int imageIndexForProgress = i + 1;
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathandName);
 
-
-
             storageReference.putFile(modelImagePicked.getImageUri())
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
-                            double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-
-                            String message = "Uploading "+ imageIndexForProgress + " of " + imagePickedArrayList.size() + " images...\nProgress " +(int)progress + "%";
-                            Log.d(TAG, "onProgress: message" +message);
-                            progressDialog.setMessage(message);
-                            progressDialog.show();
-
-
-
-                        }
+                    .addOnProgressListener(snapshot -> {
+                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                        String message = "Uploading " + imageIndexForProgress + " of " + totalImages + " images...\nProgress " + (int) progress + "%";
+                        Log.d(TAG, "onProgress: message" + message);
+                        progressDialog.setMessage(message);
+                        progressDialog.show();
                     })
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d(TAG, "onSuccess: ");
-                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!uriTask.isSuccessful());
+                    .addOnSuccessListener(taskSnapshot -> {
+                        uploadedImages.incrementAndGet();
 
-                            Uri uploadedImageUrl = uriTask.getResult();
-                            if(uriTask.isSuccessful()){
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("id", ""+modelImagePicked.getId());
-                                hashMap.put("imageUrl", ""+uploadedImageUrl);
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
 
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
-                                ref.child(keyId).child("Images")
-                                        .child(imageName)
-                                        .updateChildren(hashMap);
-                            }
+                        Uri uploadedImageUrl = uriTask.getResult();
+                        if (uriTask.isSuccessful()) {
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("id", "" + modelImagePicked.getId());
+                            hashMap.put("imageUrl", "" + uploadedImageUrl);
 
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
+                            ref.child(keyId).child("Images")
+                                    .child(imageName)
+                                    .updateChildren(hashMap);
+                        }
+
+                        if (uploadedImages.get() == totalImages) {
                             progressDialog.dismiss();
                             Utils.goToMenu(AdCreateActivity.this);
-                            Toast.makeText(AdCreateActivity.this, "Succsesfuly added!", Toast.LENGTH_SHORT).show();
-
-
+                            Toast.makeText(AdCreateActivity.this, "Successfully added", Toast.LENGTH_SHORT).show();
                         }
-                    }). addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "onFailure: ",e );
-                            progressDialog.dismiss();
-                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "onFailure: ", e);
+                        progressDialog.dismiss();
                     });
-
-
         }
-
     }
+
+
 
 
 }
