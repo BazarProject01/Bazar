@@ -9,7 +9,18 @@ import android.widget.CalendarView;
 import android.widget.Toast;
 
 import android.text.format.DateFormat;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.internal.Util;
+
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Utils {
@@ -45,15 +56,6 @@ public class Utils {
 
     public static final String[] conditions = {"New", "Used", "Refurbished"};
 
-    public static String formatTimestampDate(long timestamp){
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(timestamp);
-
-        String date = DateFormat.format("dd//MM//yyyy", calendar).toString();
-
-        return date;
-    }
-
 
     public static void toast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -66,6 +68,69 @@ public class Utils {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
+    public static void addToFavorite(Context context, String adId)
+    {
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser() == null){
+            Utils.toast(context, "You`re not logged in!");
+
+        } else {
+
+            long timestamp = Utils.getTimestamp();
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("adId", adId);
+            hashMap.put("timestamp", timestamp);
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Favorites").child(adId)
+                    .setValue(hashMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Utils.toast(context, "Added to favorite!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Utils.toast(context, "Failed to add to favorite due to: "+e.getMessage());
+                        }
+                    });
+
+
+        }
+    }
+
+    public static void removeFromFavorite(Context context, String adId)
+    {
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null){
+
+            Utils.toast(context, "You`re not logged in!");
+
+        } else {
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Favorites").child(adId)
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Utils.toast(context, "Removed from favorite!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Utils.toast(context, "Failed to remove from favorite due to: "+e.getMessage());
+                        }
+                    });
+
+
+        }
+    }
 
 
 }

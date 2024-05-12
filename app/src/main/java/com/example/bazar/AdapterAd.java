@@ -49,9 +49,8 @@ public class AdapterAd extends RecyclerView.Adapter<AdapterAd.Holder> implements
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = RowAdBinding.inflate(LayoutInflater.from(context), parent, false);
-
-        return new Holder(binding.getRoot());
+        RowAdBinding binding = RowAdBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new Holder(binding);
     }
 
     @Override
@@ -63,13 +62,18 @@ public class AdapterAd extends RecyclerView.Adapter<AdapterAd.Holder> implements
         String description = modelAd.getDescription();
         String address = modelAd.getAddress();
         String condition = modelAd.getCondition();
-        String price= modelAd.getPrice();
+        String price = modelAd.getPrice();
 
-        long timestamp = Long.parseLong(modelAd.getTimestamp());
+        long timestamp = modelAd.getTimestamp();
         Date date = new Date(timestamp);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String formattedDate = sdf.format(date);
+
         loadAdFirstImage(modelAd, holder);
+
+        if (firebaseAuth.getCurrentUser() != null) {
+            checkIsFavorite(modelAd, holder);
+        }
 
         holder.titleTv.setText(title);
         holder.descriptionTv.setText(description);
@@ -77,44 +81,91 @@ public class AdapterAd extends RecyclerView.Adapter<AdapterAd.Holder> implements
         holder.conditionTv.setText(condition);
         holder.priceTv.setText(price);
         holder.dateTv.setText(formattedDate);
+
+        holder.favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean favorite = modelAd.isFavorite();
+
+                    if(favorite){
+                        Utils.removeFromFavorite(context, modelAd.getId());
+
+                    } else {
+                        Utils.addToFavorite(context, modelAd.getId());
+                    }
+
+
+                }
+            });
+        }
+
+
+
+    private void checkIsFavorite(ModelAd modelAd, Holder holder) {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).child("Favorites").child(modelAd.getId())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        boolean favorite = snapshot.exists();
+
+                        modelAd.setFavorite(favorite);
+
+                        // Обновляем изображение кнопки в соответствии с состоянием favorite
+                        if (favorite) {
+                            holder.favBtn.setImageResource(R.drawable.ic_fav_yes);
+                        } else {
+                            holder.favBtn.setImageResource(R.drawable.ic_fav_no);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Обработка ошибок, если необходимо
+                    }
+                });
     }
 
     private void loadAdFirstImage(ModelAd modelAd, Holder holder) {
         Log.d(TAG, "loadAdFirstImage: ");
 
         String adId = modelAd.getId();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Ads");
-        reference.child(adId).child("Images").limitToFirst(1)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot ds : snapshot.getChildren()){
-                            String imageUrl = ""+ds.child("imageUrl").getValue();
-                            Log.d(TAG, "onDataChange: ");
-                            Log.d(TAG, "Image URL: " + imageUrl);
+        Log.d(TAG, "Ad ID: " + adId); // Выводим значение adId для отладки
 
-                          try {
-                              Glide.with(context)
-                                      .load(imageUrl)
-                                      .placeholder(R.drawable.ic_image_gray)
-                                      .into(holder.imageIv);
-                              Log.d(TAG, "onDataChange: Loaded photo");
+        if (adId != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Ads");
+            reference.child(adId).child("Images").limitToFirst(1)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Log.d(TAG, "onDataChange: imageId " + adId);
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                String imageUrl = "" + ds.child("imageUrl").getValue();
+                                Log.d(TAG, "onDataChange: ");
+                                Log.d(TAG, "Image URL: " + imageUrl);
 
-                          } catch (Exception e) {
-                              Log.e(TAG, "onDataChange: ",e );
+                                try {
+                                    Glide.with(context)
+                                            .load(imageUrl)
+                                            .placeholder(R.drawable.ic_image_gray)
+                                            .into(holder.imageIv);
+                                    Log.d(TAG, "onDataChange: Loaded photo");
 
-                          }
-
+                                } catch (Exception e) {
+                                    Log.e(TAG, "onDataChange: ", e);
+                                }
+                            }
                         }
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        } else {
+            Log.e(TAG, "Ad ID is null!");
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -135,10 +186,9 @@ public class AdapterAd extends RecyclerView.Adapter<AdapterAd.Holder> implements
         ShapeableImageView imageIv;
         TextView titleTv, descriptionTv, addressTv, conditionTv, priceTv, dateTv;
         ImageButton favBtn;
-        public Holder(@NonNull View itemView) {
+        public Holder(@NonNull RowAdBinding binding) {
 
-            super(itemView);
-
+            super(binding.getRoot());
 
             titleTv = binding.titleTv;
             favBtn = binding.favBtn;

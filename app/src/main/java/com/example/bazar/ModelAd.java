@@ -12,14 +12,14 @@ public class ModelAd {
     String title;
     String description;
     String status;
-    String timestamp;
+    long timestamp;
     boolean favorite;
 
     public ModelAd(){
 
     }
 
-    public ModelAd(String id, String uid, String brand, String category, String condition, String address, String price, String title, String description, String status, String timestamp, boolean favorite) {
+    public ModelAd(String id, String uid, String brand, String category, String condition, String address, String price, String title, String description, String status, long timestamp, boolean favorite) {
         this.id = id;
         this.uid = uid;
         this.brand = brand;
@@ -114,11 +114,11 @@ public class ModelAd {
         this.status = status;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp( long timestamp) {
         this.timestamp = timestamp;
     }
 

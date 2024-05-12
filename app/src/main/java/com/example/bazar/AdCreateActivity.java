@@ -266,21 +266,18 @@ public class AdCreateActivity extends AppCompatActivity {
                 }
             }
     );
-    private String brand = "";
     private String category = "";
     private String condition = "";
     private String address = "";
     private String price= "";
     private String title = "";
     private String description = "";
-    private double latitude =0;
-    private double longitude =0;
+
 
 
     private void validateData(){
         Log.d(TAG, "validateData: ");
 
-        brand = binding.brandEt.getText().toString().trim();
         category = binding.categoryAct.getText().toString().trim();
         condition = binding.conditionAct.getText().toString().trim();
         address = binding.locatioEt.getText().toString().trim();
@@ -289,12 +286,9 @@ public class AdCreateActivity extends AppCompatActivity {
         description = binding.descriptionEt.getText().toString().trim();
 
 
-        if (brand.isEmpty()) {
-            binding.brandEt.setError("Enter Brand");
-            binding.brandEt.requestFocus();
-        }
 
-        else if (category.isEmpty()) {
+
+        if (category.isEmpty()) {
             binding.categoryAct.setError("Enter Category");
             binding.categoryAct.requestFocus();
         }
@@ -344,7 +338,6 @@ public class AdCreateActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("id", ""+keyId);
         hashMap.put("uid", ""+firebaseAuth.getUid());
-        hashMap.put("brand", ""+brand);
         hashMap.put("category", ""+category);
         hashMap.put("condition", ""+condition);
         hashMap.put("address", ""+address);
@@ -352,7 +345,7 @@ public class AdCreateActivity extends AppCompatActivity {
         hashMap.put("title", ""+title);
         hashMap.put("description", ""+description);
         hashMap.put("status", ""+Utils.AD_STATUS_AVAILABLE);
-        hashMap.put("timestamp", ""+timestamp);
+        hashMap.put("timestamp", timestamp);
 
 
         refAds.child(keyId)
