@@ -131,15 +131,15 @@ public class LoginOptionsActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                       if (authResult.getAdditionalUserInfo().isNewUser()){
-                             Log.d(TAG, "onSuccess: New User, Account created...");
+                        if (authResult.getAdditionalUserInfo().isNewUser()){
+                            Log.d(TAG, "onSuccess: New User, Account created...");
 
-                             updateUserInfoDb();
-                       } else{
-                             Log.d(TAG, "onSuccess: Existing user");
-                             startActivity(new Intent(LoginOptionsActivity.this, MainActivity.class));
-                             finishAffinity();
-                       }
+                            updateUserInfoDb();
+                        } else{
+                            Log.d(TAG, "onSuccess: Existing user");
+                            startActivity(new Intent(LoginOptionsActivity.this, MainActivity.class));
+                            finishAffinity();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

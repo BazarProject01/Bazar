@@ -27,14 +27,14 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class LoginPhoneActivity extends AppCompatActivity {
-private ActivityLoginPhoneBinding binding;
-private ProgressDialog progressDialog;
-private FirebaseAuth firebaseAuth;
-private PhoneAuthProvider.ForceResendingToken forceResendingToken;
-private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private ActivityLoginPhoneBinding binding;
+    private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
+    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
-private String mVerificationId;
-private static final  String TAG =  "LOGIN_PHONE_TAG";
+    private String mVerificationId;
+    private static final  String TAG =  "LOGIN_PHONE_TAG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

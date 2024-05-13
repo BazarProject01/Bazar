@@ -7,6 +7,7 @@
     tools:context=".activities.AdDetailsActivity">
 
     <RelativeLayout
+        android:background="@color/purple_200"
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="55dp">
@@ -89,7 +90,7 @@
              <TextView
                  android:id="@+id/priceSymbolTv"
                  android:layout_width="wrap_content"
-                 style="@style/TextAppearance.MaterialComponents.Body1"
+                 style="@style/TextAppearance.MaterialComponents.Headline6"
                  android:layout_below="@id/imageSliderVp"
                  android:layout_marginEnd="2dp"
                  android:text="@string/price_symbol"
@@ -98,7 +99,7 @@
              <TextView
                  android:id="@+id/priceTv"
                  android:layout_width="wrap_content"
-                 style="@style/TextAppearance.MaterialComponents.Body1"
+                 style="@style/TextAppearance.MaterialComponents.Headline6"
                  android:layout_below="@id/imageSliderVp"
                  android:layout_toEndOf="@id/priceSymbolTv"
                  android:text="00"
@@ -130,7 +131,7 @@
                  android:id="@+id/categoryLabelTv"
                  android:layout_width="wrap_content"
                  style="@style/TextAppearance.MaterialComponents.Headline6"
-                 android:layout_below="@id/dateTv"
+                 android:layout_below="@id/titleTv"
                  android:layout_marginTop="10dp"
                  android:text="Category"
                  android:layout_height="wrap_content"/>
@@ -143,20 +144,15 @@
                  android:text="The Ad Category"
                  android:layout_height="wrap_content" />
 
-             <TextView
-                 android:id="@+id/titleLabelTv"
-                 android:layout_width="wrap_content"
-                 style="@style/TextAppearance.MaterialComponents.Headline6"
-                 android:layout_below="@id/categoryTv"
-                 android:layout_marginTop="4dp"
-                 android:text="Title"
-                 android:layout_height="wrap_content"/>
+
 
              <TextView
                  android:id="@+id/titleTv"
+                 android:textSize="22dp"
+                 android:layout_marginTop="10dp"
                  android:layout_width="wrap_content"
-                 style="@style/TextAppearance.MaterialComponents.Body2"
-                 android:layout_below="@id/titleLabelTv"
+                 style="@style/TextAppearance.MaterialComponents.Headline6"
+                 android:layout_below="@id/dateTv"
                  tools:text="@tools:sample/lorem[5]"
                  android:layout_height="wrap_content"/>
 
@@ -164,7 +160,7 @@
                  android:id="@+id/descriptionLabelTv"
                  android:layout_width="wrap_content"
                  style="@style/TextAppearance.MaterialComponents.Headline6"
-                 android:layout_below="@id/titleTv"
+                 android:layout_below="@id/categoryTv"
                  android:layout_marginTop="4dp"
                  android:text="Description"
                  android:layout_height="wrap_content"/>
@@ -225,6 +221,7 @@
                          android:id="@+id/sellerProfileIv"
                          app:shapeAppearanceOverlay="@style/ImageStyle_Circle"
                          android:background="@color/gray1"
+                         android:layout_marginEnd="20dp"
                          android:src="@drawable/ic_person_white"
                          android:layout_width="40dp"
                          android:layout_height="40dp"/>
@@ -247,6 +244,7 @@
                          android:layout_height="wrap_content"/>
 
                      <TextView
+                         android:layout_marginStart="5dp"
                          android:id="@+id/memberSinceTv"
                          android:layout_width="wrap_content"
                          style="@style/TextAppearance.MaterialComponents.Caption"
@@ -254,15 +252,6 @@
                          android:layout_below="@id/sellerNameTv"
                          android:text="dd//MM//yyyy"
                          android:layout_height="wrap_content"/>
-
-                     <ImageView
-                         android:id="@+id/nextIv"
-                         android:layout_width="wrap_content"
-                         android:layout_alignParentEnd="true"
-                         android:layout_centerVertical="true"
-                         android:layout_height="wrap_content"
-                         android:src="@drawable/ic_next_gray" />
-
 
 
                  </RelativeLayout>
@@ -282,13 +271,15 @@
         android:id="@+id/callBtn"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="2dp"
-        android:padding="2dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:padding="10dp"
         android:text="Call"
         app:cornerRadius="8dp"
         android:textSize="20dp"
         android:minHeight="60dp"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/purple_200"
         android:layout_height="wrap_content"/>
 
 

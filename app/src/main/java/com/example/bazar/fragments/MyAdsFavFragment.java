@@ -121,7 +121,10 @@ public class MyAdsFavFragment extends Fragment {
 
                                                 try {
                                                     ModelAd modelAd = snapshot.getValue(ModelAd.class);
-                                                    adArrayList.add(modelAd);
+
+                                                    if (modelAd != null) {
+                                                        adArrayList.add(modelAd);
+                                                    }
 
                                                 } catch (Exception e){
                                                     Log.e(TAG, "onDataChange: ",e );

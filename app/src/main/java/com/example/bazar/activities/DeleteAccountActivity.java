@@ -54,14 +54,14 @@ public class DeleteAccountActivity extends AppCompatActivity {
         binding.toolbarBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Utils.goToMenu(DeleteAccountActivity.this);
+                Utils.goToMenu(DeleteAccountActivity.this);
                 finishAffinity();
             }
         });
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               deleteAccount();
+                deleteAccount();
             }
         });
     }

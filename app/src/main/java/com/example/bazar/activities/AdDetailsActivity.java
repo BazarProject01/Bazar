@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -103,6 +107,8 @@ public class AdDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                editOptions();
+
             }
         });
 
@@ -130,6 +136,37 @@ public class AdDetailsActivity extends AppCompatActivity {
                 Utils.callIntent(AdDetailsActivity.this, sellerPhone);
             }
         });
+    }
+
+    private void editOptions() {
+        Log.d(TAG, "editOptions: ");
+        PopupMenu popupMenu = new PopupMenu(this, binding.toolbarEditBtn);
+
+        popupMenu.getMenu().add(Menu.NONE, 0, 0, "Edit");
+        popupMenu.getMenu().add(Menu.NONE, 1, 1, "Mark As Sold");
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int itemId = item.getItemId();
+
+                if (itemId == 0){
+                    Intent intent = new Intent(AdDetailsActivity.this, AdCreateActivity.class);
+                    intent.putExtra("isEditMode", true);
+                    intent.putExtra("adId", adId);
+                    startActivity(intent);
+
+                } else if (itemId == 1){
+                    showMarkAsSoldDialog();;
+
+                }
+                return true;
+            }
+        });
+
     }
 
     private void showMarkAsSoldDialog(){
@@ -173,6 +210,8 @@ public class AdDetailsActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
+
     }
     private void loadAdDetails(){
         Log.d(TAG, "loadAdDetails: ");
@@ -291,7 +330,7 @@ public class AdDetailsActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: favorite" + favorite);
 
                         if (favorite){
-                         binding.toolbarFavBtn.setImageResource(R.drawable.ic_fav_yes);
+                            binding.toolbarFavBtn.setImageResource(R.drawable.ic_fav_yes);
                         } else {
                             binding.toolbarFavBtn.setImageResource(R.drawable.ic_fav_no);
                         }
@@ -341,7 +380,7 @@ public class AdDetailsActivity extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "onSuccess: ");
                         Utils.toast(AdDetailsActivity.this, "Deleted");
-                        onBackPressed();
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

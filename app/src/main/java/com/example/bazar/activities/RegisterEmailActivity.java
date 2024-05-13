@@ -58,7 +58,7 @@ public class RegisterEmailActivity extends AppCompatActivity {
         binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 validateData();
+                validateData();
             }
         });
     }
@@ -97,8 +97,8 @@ public class RegisterEmailActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                      Log.d(TAG, "onSuccess: Register Success");
-                      updateUserInfo();
+                        Log.d(TAG, "onSuccess: Register Success");
+                        updateUserInfo();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

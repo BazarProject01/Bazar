@@ -28,22 +28,22 @@ public class FilterAd extends Filter {
 
             ArrayList<ModelAd> filterModels = new ArrayList<>();
             for (int i = 0; i < filterList.size(); i++) {
-             if(     filterList.get(i).getCategory().toUpperCase().contains(constraint) ||
-                     filterList.get(i).getCondition().toUpperCase().contains(constraint)||
-                     filterList.get(i).getTitle().toUpperCase().contains(constraint)) {
+                if(     filterList.get(i).getCategory().toUpperCase().contains(constraint) ||
+                        filterList.get(i).getCondition().toUpperCase().contains(constraint)||
+                        filterList.get(i).getTitle().toUpperCase().contains(constraint)) {
 
-                 filterModels.add(filterList.get(i));
-             }
+                    filterModels.add(filterList.get(i));
+                }
 
             }
-             results.count = filterModels.size();
-             results.values = filterModels;
+            results.count = filterModels.size();
+            results.values = filterModels;
 
         }  else {
 
             results.count = filterList.size();
             results.values =filterList;
-            }
+        }
 
         return results;
     }

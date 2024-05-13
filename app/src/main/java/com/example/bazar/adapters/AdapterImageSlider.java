@@ -44,32 +44,32 @@ public class AdapterImageSlider extends RecyclerView.Adapter<AdapterImageSlider.
     @Override
     public void onBindViewHolder(@NonNull HolderImageSlider holder, int position) {
 
-     ModelImageSlider modelImageSlider = imageSliderArrayList.get(position);
+        ModelImageSlider modelImageSlider = imageSliderArrayList.get(position);
 
-     String imageUrl =  modelImageSlider.getImageUrl();
+        String imageUrl =  modelImageSlider.getImageUrl();
 
-     String imageCunt = (position+1) + "/" + imageSliderArrayList.size();
+        String imageCunt = (position+1) + "/" + imageSliderArrayList.size();
 
 
-     holder.imageCountTv.setText(imageCunt);
+        holder.imageCountTv.setText(imageCunt);
 
-     try {
-         Glide.with(context)
-                 .load(imageUrl)
-                 .placeholder(R.drawable.ic_image_gray)
-                 .into(holder.imageIv);
+        try {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_image_gray)
+                    .into(holder.imageIv);
 
-     } catch (Exception e)
-     {
-         Log.e(TAG, "onBindViewHolder: ",e );
-     }
+        } catch (Exception e)
+        {
+            Log.e(TAG, "onBindViewHolder: ",e );
+        }
 
-     holder.itemView.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-         }
-     });
+            }
+        });
 
 
     }

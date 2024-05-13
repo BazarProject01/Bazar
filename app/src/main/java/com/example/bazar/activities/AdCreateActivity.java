@@ -34,8 +34,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -56,6 +59,10 @@ public class AdCreateActivity extends AppCompatActivity {
 
     private Uri imageUri = null;
     private AdapterImagePicked adapterImagePicked;
+
+    private boolean isEditMode = false;
+    private String adIdForEditing = "";
+
     private ArrayList<ModelImagePicked> imagePickedArrayList;
 
     @Override
@@ -80,6 +87,23 @@ public class AdCreateActivity extends AppCompatActivity {
         progressDialog.setTitle("Please wait...");
         progressDialog.setCanceledOnTouchOutside(false);
 
+       Intent intent = getIntent();
+       isEditMode = intent.getBooleanExtra("isEditMode", false);
+        Log.d(TAG, "onCreate: isEditMode: " +isEditMode);
+
+        if (isEditMode)
+        {
+            adIdForEditing = intent.getStringExtra("adId");
+            loadAdDetails();
+
+            binding.toolbarTitleTv.setText("Update Ad");
+            binding.postAdBtn.setText("Updated Ad");
+        } else {
+
+            binding.toolbarTitleTv.setText("Created Ad");
+            binding.postAdBtn.setText("Post Ad");
+
+        }
 
 
         binding.toolbarBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +130,7 @@ public class AdCreateActivity extends AppCompatActivity {
     private void loadImages(){
         Log.d(TAG, "loadImages: ");
 
-        adapterImagePicked = new AdapterImagePicked(this, imagePickedArrayList);
+        adapterImagePicked = new AdapterImagePicked(this, imagePickedArrayList, adIdForEditing);
         binding.imagesRv.setAdapter(adapterImagePicked);
 
     }
@@ -192,7 +216,7 @@ public class AdCreateActivity extends AppCompatActivity {
                         pickImageCamera();
 
                     } else {
-                      Utils.toast(AdCreateActivity.this, "Camera or gallery or both permissions denied...");
+                        Utils.toast(AdCreateActivity.this, "Camera or gallery or both permissions denied...");
                     }
 
                 }
@@ -201,7 +225,6 @@ public class AdCreateActivity extends AppCompatActivity {
     private void pickImageGallery(){
         Log.d(TAG, "pickImageGallery: ");
         Intent intent = new Intent(Intent.ACTION_PICK);
-
         intent.setType("image/*");
         galleryActivityResultLauncher.launch(intent);
 
@@ -326,8 +349,14 @@ public class AdCreateActivity extends AppCompatActivity {
             Utils.toast(AdCreateActivity.this, "Pick at-least one image!");
 
         } else {
-            postAd();
+            if (isEditMode) {
+                updateAd();
+            } else {
+                postAd();
+            }
+
         }
+
     }
 
     private void postAd(){
@@ -374,6 +403,39 @@ public class AdCreateActivity extends AppCompatActivity {
 
     }
 
+    private void updateAd(){
+        Log.d(TAG, "updateAd: ");
+
+         progressDialog.setMessage("Updating Ad..");
+        progressDialog.show();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("category", ""+category);
+        hashMap.put("condition", ""+condition);
+        hashMap.put("address", ""+address);
+        hashMap.put("price", ""+price);
+        hashMap.put("title", ""+title);
+        hashMap.put("description", ""+description);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
+        ref.child(adIdForEditing)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        uploadImageStorage(adIdForEditing);
+                        onBackPressed();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: ",e );
+                        Utils.toast(AdCreateActivity.this, "Failed to update Ad due to"+e.getMessage());
+                    }
+                });
+    }
+
     private void uploadImageStorage(String keyId) {
         Log.d(TAG, "uploadImageStorage: ");
 
@@ -382,50 +444,111 @@ public class AdCreateActivity extends AppCompatActivity {
 
         for (int i = 0; i < totalImages; i++) {
             ModelImagePicked modelImagePicked = imagePickedArrayList.get(i);
-            String imageName = modelImagePicked.getId();
-            String filePathandName = "Ads/" + imageName;
-            int imageIndexForProgress = i + 1;
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathandName);
+          if (!modelImagePicked.getFromIntent()){
+              String imageName = modelImagePicked.getId();
+              String filePathandName = "Ads/" + imageName;
+              int imageIndexForProgress = i + 1;
+              StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathandName);
 
-            storageReference.putFile(modelImagePicked.getImageUri())
-                    .addOnProgressListener(snapshot -> {
-                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                        String message = "Uploading " + imageIndexForProgress + " of " + totalImages + " images...\nProgress " + (int) progress + "%";
-                        Log.d(TAG, "onProgress: message" + message);
-                        progressDialog.setMessage(message);
-                        progressDialog.show();
-                    })
-                    .addOnSuccessListener(taskSnapshot -> {
-                        uploadedImages.incrementAndGet();
+              storageReference.putFile(modelImagePicked.getImageUri())
+                      .addOnProgressListener(snapshot -> {
+                          double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                          String message = "Uploading " + imageIndexForProgress + " of " + totalImages + " images...\nProgress " + (int) progress + "%";
+                          Log.d(TAG, "onProgress: message" + message);
+                          //progressDialog.setMessage(message);
+                          //progressDialog.show();
+                      })
+                      .addOnSuccessListener(taskSnapshot -> {
+                          uploadedImages.incrementAndGet();
 
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful()) ;
+                          Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                          while (!uriTask.isSuccessful()) ;
 
-                        Uri uploadedImageUrl = uriTask.getResult();
-                        if (uriTask.isSuccessful()) {
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("id", "" + modelImagePicked.getId());
-                            hashMap.put("imageUrl", "" + uploadedImageUrl);
+                          Uri uploadedImageUrl = uriTask.getResult();
+                          if (uriTask.isSuccessful()) {
+                              HashMap<String, Object> hashMap = new HashMap<>();
+                              hashMap.put("id", "" + modelImagePicked.getId());
+                              hashMap.put("imageUrl", "" + uploadedImageUrl);
 
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
-                            ref.child(keyId).child("Images")
-                                    .child(imageName)
-                                    .updateChildren(hashMap);
-                        }
+                              DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
+                              ref.child(keyId).child("Images")
+                                      .child(imageName)
+                                      .updateChildren(hashMap);
+                          }
 
-                        if (uploadedImages.get() == totalImages) {
-                            progressDialog.dismiss();
-                            Utils.goToMenu(AdCreateActivity.this);
-                            Toast.makeText(AdCreateActivity.this, "Successfully added", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e(TAG, "onFailure: ", e);
-                        progressDialog.dismiss();
-                    });
+                          if (uploadedImages.get() == totalImages) {
+                              //Utils.goToMenu(AdCreateActivity.this);
+                              onBackPressed();
+                              Toast.makeText(AdCreateActivity.this, "Successfully added", Toast.LENGTH_SHORT).show();
+                             // progressDialog.dismiss();
+                          }
+
+                      })
+                      .addOnFailureListener(e -> {
+                          Log.e(TAG, "onFailure: ", e);
+                          //progressDialog.dismiss();
+                      });
+          }
         }
     }
+ private void loadAdDetails(){
+     Log.d(TAG, "loadAdDetails: ");
 
+     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Ads");
+     ref.child(adIdForEditing)
+             .addListenerForSingleValueEvent(new ValueEventListener() {
+                 @Override
+                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                     String title = ""+ snapshot.child("title").getValue();
+                     String description = ""+ snapshot.child("description").getValue();
+                     String category = ""+ snapshot.child("category").getValue();
+                     String address = ""+ snapshot.child("address").getValue();
+                     String price = ""+ snapshot.child("price").getValue();
+                     String condition = ""+ snapshot.child("condition").getValue();
+
+                     binding.titleEt.setText(title);
+                     binding.conditionAct.setText(condition);
+                     binding.descriptionEt.setText(description);
+                     binding.categoryAct.setText(category);
+                     binding.locatioEt.setText(address);
+                     binding.priceEt.setText(price);
+
+
+                     DatabaseReference refImages = snapshot.child("Images").getRef();
+                     refImages.addListenerForSingleValueEvent(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                             for(DataSnapshot ds: snapshot.getChildren())
+                             {
+                                 String id  = ""+ ds.child("id").getValue();
+                                 String imageUrl  = ""+ ds.child("imageUrl").getValue();
+
+                                 ModelImagePicked modelImagePicked = new ModelImagePicked(id, null, imageUrl, true);
+                                 imagePickedArrayList.add(modelImagePicked);
+
+
+                             }
+                             loadImages();
+
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
+                 }
+
+                 @Override
+                 public void onCancelled(@NonNull DatabaseError error) {
+
+                 }
+             });
+
+ }
 
 
 

@@ -22,9 +22,9 @@ public class Utils {
     public static final String AD_STATUS_SOLD ="SOLD";
 
     public static final String[] categories = {
-      "Mobiles",
-      "Computer/Laptop",
-      "Electronics & Home Appliances",
+            "Mobiles",
+            "Computer/Laptop",
+            "Electronics & Home Appliances",
             "Vehicles",
             "Furniture & Home Decor",
             "Fashion & Beauty",

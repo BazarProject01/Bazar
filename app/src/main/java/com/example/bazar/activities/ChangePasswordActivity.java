@@ -52,7 +52,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               validateData();
+                validateData();
             }
         });
     }

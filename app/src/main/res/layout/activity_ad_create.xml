@@ -21,11 +21,12 @@
             android:layout_centerVertical="true" />
 
         <TextView
+            android:id="@+id/toolbarTitleTv"
+            style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Ad"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:text="Create Ad" />
 
         <ImageButton
             android:id="@+id/toolbarAdImageBtn"

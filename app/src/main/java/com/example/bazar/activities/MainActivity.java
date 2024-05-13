@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
     private void showAdCreateFragment() {
-        startActivity(new Intent(MainActivity.this, AdCreateActivity.class));
+        Intent intent = new Intent(MainActivity.this, AdCreateActivity.class);
+        intent.putExtra("isEditMode", false);
+        startActivity(intent);
     }
 
     private void startLoginOptions()
